@@ -24,8 +24,11 @@ class CPU:
             0b00010001: self.handle_RET,
             0b10100000: self.handle_ADD,
             0b10100010: self.handle_MUL,
-            # * ------------------------
-            
+            # * -------------------------
+            0b10100111: self.handle_CMP,
+            0b01010100: self.handle_JMP,
+            0b01010101: self.handle_JEQ,
+            0b01010110: self.handle_JNE,
         }
 
     def load(self, prog):
@@ -142,9 +145,25 @@ class CPU:
     def handle_MUL(self, operand_a, operand_b):
         self.alu("MUL", operand_a, operand_b)
 
-'''
-# * Sprint Challenge
-'''
+    """
+    # * Sprint Challenge
+    """
+
+    # ? send values in two registers to alu() for comparison
+    def handle_CMP(self, operand_a, operand_b):
+        pass
+
+    # ? jump/set pc to the address stored in given register
+    def handle_JMP(self, operand_a, operand_b):
+        pass
+
+    # ? If equal flag is set (true), jump to the address stored in the given register
+    def handle_JEQ(self, operand_a, operand_b):
+        pass
+
+    # ? If E flag is clear (false, 0), jump to the address stored in the given register
+    def handle_JNE(self, operand_a, operand_b):
+        pass
 
     def run(self):
         """Run the CPU."""
