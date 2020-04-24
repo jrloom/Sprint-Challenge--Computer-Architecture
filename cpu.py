@@ -14,6 +14,7 @@ class CPU:
         self.pc = 0
         self.sp = 7
         self.running = False
+        self.flag = 0
         self.branchtable = {
             0b00000001: self.handle_HLT,
             0b10000010: self.handle_LDI,
@@ -32,7 +33,7 @@ class CPU:
         }
 
     def load(self, prog):
-        prog = "examples/" + prog + ".ls8"
+        # prog = "examples/" + prog + ".ls8"
         addr = 0
 
         with open(prog) as file:
@@ -60,6 +61,20 @@ class CPU:
         # elif op == "SUB": etc
         elif op == "MUL":
             self.reg[reg_a] *= self.reg[reg_b]
+        # * ------------------------------------
+        elif op == "CMP":
+            # ? sets E flag to 1
+            if self.reg[reg_a] == self.reg[reg_b]:
+                self.flag = 0b00000001
+
+            # ? sets G flag to 1
+            elif self.reg[reg_a] > self.reg[reg_b]:
+                self.flag = 0b00000010
+
+            # ? sets L flag to 1
+            elif self.reg[reg_a] < self.reg[reg_b]:
+                self.flag = 0b00000100
+        # * ------------------------------------
         else:
             raise Exception("Unsupported ALU operation")
 
@@ -151,7 +166,8 @@ class CPU:
 
     # ? send values in two registers to alu() for comparison
     def handle_CMP(self, operand_a, operand_b):
-        pass
+        print("\nCMP")
+        self.alu("CMP", operand_a, operand_b)
 
     # ? jump/set pc to the address stored in given register
     def handle_JMP(self, operand_a, operand_b):
