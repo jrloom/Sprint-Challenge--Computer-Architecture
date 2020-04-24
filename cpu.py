@@ -38,7 +38,7 @@ class CPU:
 
         with open(prog) as file:
 
-            print(f"file: {prog}")
+            print(f"load file: {prog}\n")
 
             for line in file:
                 line = line.split("#")
@@ -117,6 +117,7 @@ class CPU:
     """
 
     def handle_HLT(self, operand_a, operand_b):
+        print("\nand...stop")
         self.running = False
 
     def handle_LDI(self, operand_a, operand_b):
@@ -166,25 +167,26 @@ class CPU:
 
     # ? send values in two registers to alu() for comparison
     def handle_CMP(self, operand_a, operand_b):
-        print("\nCMP")
+        # print("\nCMP")
         self.alu("CMP", operand_a, operand_b)
 
     # ? jump/set pc to the address stored in given register
     def handle_JMP(self, operand_a, operand_b):
-        print("\nJMP")
+        # print("\nJMP")
         self.pc = self.reg[operand_a]
 
-    # ? If equal flag is set (true), jump to the address stored in the given register
+    # ? if E flag set to 1, jump to address stored in the given register
     def handle_JEQ(self, operand_a, operand_b):
-        print("\nJEQ")
-        if self.flag is 1:
+        # print("\nJEQ")
+        if (self.flag & 0b00000001) is 1:
             self.handle_JMP(operand_a, operand_b)
         else:
             self.pc += 2
 
-    # ? If E flag is clear (false, 0), jump to the address stored in the given register
+    # ? if E flag set to 0, jump to address stored in the given register
     def handle_JNE(self, operand_a, operand_b):
-        if self.flag is 0:
+        # print("\nJNE")
+        if (self.flag & 0b00000001) is 0:
             self.handle_JMP(operand_a, operand_b)
         else:
             self.pc += 2
