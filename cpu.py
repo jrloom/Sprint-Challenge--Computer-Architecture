@@ -171,15 +171,23 @@ class CPU:
 
     # ? jump/set pc to the address stored in given register
     def handle_JMP(self, operand_a, operand_b):
-        pass
+        print("\nJMP")
+        self.pc = self.reg[operand_a]
 
     # ? If equal flag is set (true), jump to the address stored in the given register
     def handle_JEQ(self, operand_a, operand_b):
-        pass
+        print("\nJEQ")
+        if self.flag is 1:
+            self.handle_JMP(operand_a, operand_b)
+        else:
+            self.pc += 2
 
     # ? If E flag is clear (false, 0), jump to the address stored in the given register
     def handle_JNE(self, operand_a, operand_b):
-        pass
+        if self.flag is 0:
+            self.handle_JMP(operand_a, operand_b)
+        else:
+            self.pc += 2
 
     def run(self):
         """Run the CPU."""
